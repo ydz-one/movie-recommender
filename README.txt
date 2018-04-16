@@ -46,7 +46,7 @@ collection of Movie objects to be stored in DataManager.
 
 6) RatingDataParser
 This class provides methods to parse and clean the ratings.dat file into a
-collection of User objects to be stored in DataManager.
+collection of User objects with to be stored in DataManager.
 
 7) Movie
 This class is a POJO that holds relevant data for a movie.
@@ -56,3 +56,28 @@ This class is a POJO that holds relevant data for a user.
 ________________________________________________________________________________
 
 README FOR UML Sequence Diagram:
+
+1) Setting Up:
+
+A minor side note: Due to the instructions, in which we must generate a prediction given user u and item i, our Movie object is specified as i and User object is specified as u.
+
+The UML Sequence Diagram beings with the UserInterface (which contains the main). It creates a Recommender object, which in turn needs to create a DataManager object.
+
+To create the DataManager, it must first collect all the movie objects via MovieDataParser. The DataManager collects all the user objects via RatingDataParser: In order to eliminate the need for a Rating object, after executing parseMovies(), the DataManager has the movie information it needs to read the ratings data file and to populate User objects with all the appropriate movie ratings.
+
+Following parseRatings(), the DataManager also has all the information it needs to execute fillMovieRatings(), which will fill the ratings HashMaps of the users and movies.
+
+The DataManager is now ready to be given to the Recommender object, and the Recommender object is ready to be used.
+
+
+2) Generating Prediction:
+
+In UserInterface, we generate a prediction for User u and Movie i via Recommender's predictPreference() method. This method requires several processes prior to returning the result; thus, we represent these processes within the overall predictPreference arrow-loop.
+
+The Recommender gets all users and movies stored in the DataManager object. This information is used to find the neighbors of user u.
+
+calcPearsonSim() calculates the similarity between u and each of the other users. This information is used to evaluate predictPreference().
+
+Finally, the result of the prediction is returned to the UserInterface.
+
+
