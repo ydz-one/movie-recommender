@@ -11,7 +11,7 @@ ________________________________________________________________________________
 README FOR UML Class Diagram:
 
 0) Overall Design
-The design for this program follows a three-tier architecture model of a
+The design for this program follows a three-tier architecture model with a
 presentation tier, application tier, and data tier.
 
 The presentation tier consists of the UserInterface class; the application tier
