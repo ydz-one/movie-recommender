@@ -65,4 +65,18 @@ public class Movie {
 		}
 	}
 	
+	/**
+	 * This method calculates the average rating of this movie.
+	 * @return the average
+	 */
+	public double calcAvgRating() {
+		double sum = 0;
+		
+		for (Integer userID : ratings.keySet()) {
+			sum += ratings.get(userID);
+		}
+		
+		return sum / ratings.size();
+	}
+	
 }

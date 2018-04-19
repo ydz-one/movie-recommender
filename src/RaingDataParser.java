@@ -11,24 +11,20 @@ import java.util.Scanner;
  */
 public class RatingDataParser {
 	private String fileName;
-	//Key: movie id, Value: the movie object
-	private HashMap<Integer, User> allUsers;
-	private HashMap<Integer, Movie> allMovies;
 		
 	/**
 	 * Constructor method.
 	 * @param file (the file to read)
 	 */
-	public RatingDataParser(String fileName, HashMap<Integer, Movie> allMovies) {
+	public RatingDataParser(String fileName) {
 		this.fileName = fileName;
-		this.allMovies = allMovies;
-		this.allUsers = new HashMap<>();
 	}
 	
 	/**
 	 * This method reads in the file
 	 */
-	public HashMap<Integer, User> parseRatings() {
+	public HashMap<Integer, User> parseRatings(HashMap<Integer, Movie> allMovies) {
+		HashMap<Integer, User> allUsers = new HashMap<>();
 		try {
 			File inputFile = new File(fileName);
 			Scanner in = new Scanner(inputFile);
@@ -46,7 +42,6 @@ public class RatingDataParser {
 					User user = new User(userID, new HashMap<>());
 					allUsers.put(userID, user);
 				}
-				
 				allUsers.get(userID).addRating(movieID, ratingScore);
 				
 
@@ -55,9 +50,7 @@ public class RatingDataParser {
 					Movie movie = new Movie(movieID, "unknown title");
 					allMovies.put(movieID, movie);
 				}
-				
 				allMovies.get(movieID).addRating(userID, ratingScore);
-				
 			}
 			
 			in.close();
@@ -74,29 +67,16 @@ public class RatingDataParser {
 		return allUsers;
 	}
 	
-	/**
-	 * Getter method for allMovies HashMap
-	 * @return allMovies
-	 */
-	public HashMap<Integer, Movie> getAllMovies() {
-		return allMovies;
-	}
 	
-	/**
-	 * Getter method for allUsers HashMap
-	 * @return allUsers
-	 */
-	public HashMap<Integer, User> getAllUsers() {
-		return allUsers;
-	}
-	
+	/*
 	public static void main(String[] args) {
 		MovieDataParser mdp = new MovieDataParser("movies.dat");
 		mdp.parseMovies();
 		RatingDataParser rdp = new RatingDataParser("ratings.dat", mdp.getAllMovies());
 		rdp.parseRatings();
 		System.out.println(mdp.getAllMovies().size());
-		System.out.println(rdp.getAllUsers().size());
+		//System.out.println(rdp.getAllUsers().size());
 	}
+	*/
 	
 }

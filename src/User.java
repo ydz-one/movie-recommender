@@ -47,4 +47,18 @@ public class User {
 		}
 	}
 	
+	/**
+	 * This method calculates the average rating made by this user
+	 * @return the average
+	 */
+	public double calcAvgRating() {
+		double sum = 0;
+		
+		for (Integer movieID : ratings.keySet()) {
+			sum += ratings.get(movieID);
+		}
+		
+		return sum / ratings.size();
+	}
+	
 }

@@ -11,8 +11,6 @@ import java.util.Scanner;
  */
 public class MovieDataParser {
 	private String fileName;
-	//Key: movie id, Value: the movie object
-	private HashMap<Integer, Movie> allMovies;
 	
 	/**
 	 * Constructor method.
@@ -20,13 +18,13 @@ public class MovieDataParser {
 	 */
 	public MovieDataParser(String fileName) {
 		this.fileName = fileName;
-		this.allMovies = new HashMap<>();
 	}
 	
 	/**
 	 * This method reads in the file
 	 */
 	public HashMap<Integer, Movie> parseMovies() {
+		HashMap<Integer, Movie> allMovies = new HashMap<>();
 		try {
 			File inputFile = new File(fileName);
 			Scanner in = new Scanner(inputFile);
@@ -57,11 +55,4 @@ public class MovieDataParser {
 		return allMovies;
 	}
 	
-	/**
-	 * Getter method for allMovies HashMap
-	 * @return allMovies
-	 */
-	public HashMap<Integer, Movie> getAllMovies() {
-		return allMovies;
-	}
 }
