@@ -1,5 +1,11 @@
 import java.io.IOException;
 
+/**
+ * This class contains the main.
+ * It handles retrieving input from the user and
+ * providing results to the user via the console.
+ *
+ */
 public class UserInterface {
 
 	public static void main(String[] args) {
