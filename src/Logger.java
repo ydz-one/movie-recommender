@@ -44,7 +44,7 @@ public class Logger implements AutoCloseable{
 	}
 
 	/**
-	 * This method is to close the logger
+	 * This method is for closing the BufferedWriter object.
 	 */
 	@Override
 	public void close() throws IOException {
