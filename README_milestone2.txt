@@ -50,8 +50,8 @@ and one for creating a parser for ratings data.
 
 To implement this design pattern, we will create a MovieDataParserFactory class
 and a RatingDataParserFactory class that are responsible for creating their
-respective parsers. We will also need a MovieDataParser interface and
-RatingDataParser interface which the parsers will implement. For this
+respective parsers. We will also need a MovieDataParser abstract class and
+RatingDataParser abstract class which the parsers will extend. For this
 assignment, since the input files are only provided in .dat format, we would
 only need to create the MovieDataDatParser and RatingDataDatParser classes.
 
