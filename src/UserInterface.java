@@ -11,7 +11,9 @@ public class UserInterface {
 	public static void main(String[] args) {
 		String outputFile = "output-file.txt";
 
-		try (Logger logger = Logger.getInstance(outputFile)) {
+		try {
+			Logger logger = Logger.getInstance();
+			logger.setOutputFile(outputFile);
 			logger.writeToFile("Tears in rain.");
 			logger.writeToFile("Origami unicorn.");
 		} catch (IOException e) {

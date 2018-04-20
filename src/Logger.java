@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -6,48 +7,45 @@ import java.io.IOException;
  * This class logs the user input data and writes it out to an external file.
  *
  */
-public class Logger implements AutoCloseable{
+public class Logger {
 	private static Logger instance;
 	private static BufferedWriter bw;
 
 	/**
 	 * Constructor method
 	 * @param filename
-	 * @throws IOException
 	 */
-	private Logger(String filename) throws IOException {
+	private Logger() {
 		instance = this;
-		bw = new BufferedWriter(new FileWriter(filename));
+		bw = null;
 	}
 
 	/**
 	 * Getter method for instance
 	 * @param filename
 	 * @return instance
-	 * @throws IOException
 	 */
-	public static Logger getInstance(String filename) throws IOException {
+	public static Logger getInstance() {
 		if (instance == null) {
-			instance = new Logger(filename);
+			instance = new Logger();
 		}
 		return instance;
+	}
+	
+	public void setOutputFile(String filename) throws IOException {
+		bw = new BufferedWriter(new FileWriter(new File(filename), true));
 	}
 
 	/**
 	 * This method is for writing to the file
 	 * @param str
-	 * @throws IOException
+	 * @throws IOException 
 	 */
 	public void writeToFile(String str) throws IOException {
+		if (bw == null) {
+			throw new IllegalStateException("ERROR: Output file undefined!");
+		}
 		bw.append(str);
 		bw.newLine();
-	}
-
-	/**
-	 * This method is for closing the BufferedWriter object.
-	 */
-	@Override
-	public void close() throws IOException {
-		bw.close();
 	}
 }
