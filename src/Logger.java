@@ -32,6 +32,11 @@ public class Logger {
 		return instance;
 	}
 	
+	/**
+	 * Sets the output file for BufferedWriter
+	 * @param filename
+	 * @throws IOException
+	 */
 	public void setOutputFile(String filename) throws IOException {
 		bw = new BufferedWriter(new FileWriter(new File(filename), true));
 	}
