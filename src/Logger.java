@@ -52,5 +52,6 @@ public class Logger {
 		}
 		bw.append(str);
 		bw.newLine();
+		bw.flush();
 	}
 }
