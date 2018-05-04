@@ -5,7 +5,7 @@
 public class PearsonCorrelation implements SimilarityAlgorithm {
 
 	@Override
-	public double computeSimularity(User a, User b) {
+	public double execute(User a, User b) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

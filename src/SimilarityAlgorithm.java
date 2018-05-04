@@ -4,5 +4,5 @@
  *
  */
 public interface SimilarityAlgorithm {
-	public double computeSimularity(User a, User b);
+	public double execute(User a, User b);
 }
