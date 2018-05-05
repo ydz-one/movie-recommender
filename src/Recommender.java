@@ -1,9 +1,11 @@
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * This class processes movie and user rating data to provide predictions and recommendations.
@@ -58,25 +60,7 @@ public class Recommender {
 			}
 		}
 
-		// Sort all neighbors by similarity using a tree set with a custom comparator
-		SortedSet<Entry<Integer, Double>> sortedNeighbors = 
-				new TreeSet<Entry<Integer, Double>>(new SimilarityScoreComparator());
-		sortedNeighbors.addAll(neighbors.entrySet());
-
-		// Store most similar neighbor user IDs and their respective similarity values
-		Map<Integer, Double> topNeighbors = new LinkedHashMap<>();
-		int count = 0;
-
-		for (Entry<Integer, Double> entry : sortedNeighbors) {
-			topNeighbors.put(entry.getKey(), entry.getValue());
-			count++;
-			
-			if (count >= neighborhoodSize) {
-				break;
-			}
-		}
-
-		return topNeighbors;
+		return getTopEntries(neighbors, neighborhoodSize);
 	}
 	
 	/**
@@ -98,6 +82,11 @@ public class Recommender {
 	 * @return
 	 */
 	public double getAverageRating(int userID) {
+		// if user hasn't rated any movies, return 0 as average rating
+		if (dm.getUsers().get(userID).getRatings().isEmpty()) {
+			return 0;
+		}
+		
 		int count = 0;
 		double total = 0;
 		
@@ -106,11 +95,36 @@ public class Recommender {
 			count++;
 		}
 		
-		if (count == 0) {
-			return 0;
-		} else {
-			return total / count;
+		return total / count;
+	}
+	
+	/**
+	 * This method returns the k number of entries with the highest value in a map.
+	 * If the number of input elements in map is less than k, it returns a sorted map.  
+	 * @param entries The input entries
+	 * @param k The number of top entries to be returned
+	 * @return the top entries from the input map
+	 */
+	public Map<Integer, Double> getTopEntries(Map<Integer, Double> entries, int k) {
+		// Sort all entries by value using a TreeSet with a custom comparator
+		SortedSet<Entry<Integer, Double>> sortedEntries = 
+				new TreeSet<Entry<Integer, Double>>(new DescendingScoreComparator());
+		sortedEntries.addAll(entries.entrySet());
+
+		// Store top entries
+		Map<Integer, Double> topEntries = new LinkedHashMap<>();
+		int count = 0;
+
+		for (Entry<Integer, Double> entry : sortedEntries) {
+			topEntries.put(entry.getKey(), entry.getValue());
+			count++;
+			
+			if (count >= k) {
+				break;
+			}
 		}
+
+		return topEntries;
 	}
 	
 	/**
@@ -118,7 +132,7 @@ public class Recommender {
 	 * preference for it.
 	 * @param userID
 	 * @param movieID
-	 * @return preference rating
+	 * @return the predicted preference rating
 	 */
 	public double predictPreference(int userID, int movieID) {
 		// check if valid user ID
@@ -172,14 +186,32 @@ public class Recommender {
 	}
 	
 	/**
-	 * Given a user and a preference threshold, this method find all movies the user hasn't
-	 * watched with a preference rating above that threshold.
+	 * Given a user and a preference threshold, this method prints out the threshold number of top
+	 * movies the user hasn't watched.
 	 * @param userID
 	 * @param threshold
-	 * @return Map of movies
+	 * @return Map of movies. Key: movieID, value: predicted rating
 	 */
-	public Map<Integer, Movie> recommendMovies(int userID, double threshold) {
-		// TODO
-		return null;
+	public Map<Integer, Double> recommendMovies(int userID, int threshold) {
+		// find set of movies the user hasn't rated
+		Set<Integer> moviesRated = dm.getUsers().get(userID).getRatings().keySet();
+		Set<Integer> moviesNotRated = new HashSet<>(dm.getMovies().keySet());
+		moviesNotRated.removeAll(moviesRated);
+		
+		// check if user has rated all movies
+		if (moviesNotRated.isEmpty()) {
+			throw new IllegalStateException("ERROR: User has rated all movies. Nothing to recommend.");
+		}
+		
+		// calculate predictions for all moviesNotRated
+		Map<Integer, Double> predictions = new HashMap<>(); // key: movieID, value: predicted rating
+		
+		for (Integer movieID : moviesNotRated) {
+			double prediction = predictPreference(userID, movieID);
+			predictions.put(movieID, prediction);
+		}
+		
+		// return top movies
+		return getTopEntries(predictions, threshold);
 	}
 }
