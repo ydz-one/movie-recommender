@@ -1,8 +1,5 @@
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -15,18 +12,20 @@ import java.util.Map.Entry;
 public class Recommender {
 	DataManager dm;
 	SimilarityAlgorithm algo;
-	
+	int neighborhoodSize;
+
 	/**
 	 * Constructor.
 	 * @param movieDataFilename
 	 * @param ratingDataFilename
 	 */
 	public Recommender(String movieDataFilename, String ratingDataFilename,
-			SimilarityAlgorithm algo) {
+			SimilarityAlgorithm algo, int neighborhoodSize) {
 		dm = new DataManager(movieDataFilename, ratingDataFilename);
 		this.algo = algo;
+		this.neighborhoodSize = neighborhoodSize;
 	}
-	
+
 	/**
 	 * Sets the similarity algorithm.
 	 * @param algo
@@ -34,16 +33,15 @@ public class Recommender {
 	public void setSimilarityAlgorithm(SimilarityAlgorithm algo) {
 		this.algo = algo;
 	}
-	
-	
+
 	/**
 	 * Finds a specified number of neighbors for a user based on similarity.
 	 * @param userID
 	 * @param movieID
 	 * @param neighborhoodSize
-	 * @return Map of neighbors
+	 * @return Map of neighbors. Key: user ID, value: similarity score
 	 */
-	public List<Integer> findNeighbors(int userID, int movieID, int neighborhoodSize) {
+	public Map<Integer, Double> findNeighbors(int userID, int movieID, int neighborhoodSize) {
 		if (neighborhoodSize <= 0) {
 			throw new IllegalArgumentException("ERROR: neighborhoodSize cannot be non-positive");
 		}
@@ -65,12 +63,12 @@ public class Recommender {
 				new TreeSet<Entry<Integer, Double>>(new SimilarityScoreComparator());
 		sortedNeighbors.addAll(neighbors.entrySet());
 
-		// Store most similar neighbor user IDs in list and return it
-		List<Integer> topNeighbors = new ArrayList<>();
+		// Store most similar neighbor user IDs and their respective similarity values
+		Map<Integer, Double> topNeighbors = new LinkedHashMap<>();
 		int count = 0;
 
 		for (Entry<Integer, Double> entry : sortedNeighbors) {
-			topNeighbors.add(entry.getKey());
+			topNeighbors.put(entry.getKey(), entry.getValue());
 			count++;
 			
 			if (count >= neighborhoodSize) {
@@ -95,6 +93,27 @@ public class Recommender {
 	}
 	
 	/**
+	 * Calculate the average moving rating for a user.
+	 * @param userID
+	 * @return
+	 */
+	public double getAverageRating(int userID) {
+		int count = 0;
+		double total = 0;
+		
+		for (Entry<Integer, Double> rating : dm.getUsers().get(userID).getRatings().entrySet()) {
+			total += rating.getValue();
+			count++;
+		}
+		
+		if (count == 0) {
+			return 0;
+		} else {
+			return total / count;
+		}
+	}
+	
+	/**
 	 * Given a user and a movie that they haven't watched, this method predicts the user's
 	 * preference for it.
 	 * @param userID
@@ -102,8 +121,52 @@ public class Recommender {
 	 * @return preference rating
 	 */
 	public double predictPreference(int userID, int movieID) {
-		// TODO
-		return 0;
+		// check if valid user ID
+		if (!dm.getUsers().containsKey(userID)) {
+			throw new IllegalArgumentException("ERROR: Invalid user ID.");
+		}
+		
+		// check if valid movie ID
+		if (!dm.getMovies().containsKey(movieID)) {
+			throw new IllegalArgumentException("ERROR: Invalid movie ID.");
+		}
+		
+		// check if user has already rated the movie
+		if (dm.getUsers().get(userID).getRatings().containsKey(movieID)) {
+			throw new IllegalArgumentException("ERROR: User has already rated this movie");
+		}
+		
+		// get neighbors
+		Map<Integer, Double> neighbors = findNeighbors(userID, movieID, neighborhoodSize);
+		
+		// check if there is at least one neighbor
+		if (neighbors.isEmpty()) {
+			throw new IllegalStateException("ERROR: User has no neighbors who have rated this movie");
+		}
+		
+		// compute numerator and denominator of the CF equation
+		double numerator = 0;
+		double denominator = 0;
+
+		for (Entry<Integer, Double> neighbor : neighbors.entrySet()) {
+			numerator += neighbor.getValue()
+					* (dm.getUsers().get(neighbor.getKey()).getRatings().get(movieID) - getAverageRating(neighbor.getKey()));
+			denominator += Math.abs(neighbor.getValue());
+		}
+		
+		// throw exception if denominator is 0
+		if (denominator == 0) {
+			throw new IllegalStateException("ERROR: No meaningful neighbor preference data to make prediction");
+		}
+		
+		double prediction = getAverageRating(userID) + numerator / denominator;
+		
+		// cap the max prediction value at 5
+		if (prediction > 5) {
+			prediction = 5;
+		}
+		
+		return prediction;
 	}
 	
 	/**
