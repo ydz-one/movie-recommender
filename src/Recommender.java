@@ -161,9 +161,11 @@ public class Recommender {
 		
 		double prediction = getAverageRating(userID) + numerator / denominator;
 		
-		// cap the max prediction value at 5
+		// cap the max prediction value at 5 and min prediction value at 0
 		if (prediction > 5) {
 			prediction = 5;
+		} else if (prediction < 0) {
+			prediction = 0;
 		}
 		
 		return prediction;
