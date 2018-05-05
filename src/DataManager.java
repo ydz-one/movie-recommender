@@ -7,8 +7,8 @@ import java.util.HashMap;
  *
  */
 public class DataManager {
-	private MovieDataParser movieDP;
-	private RatingDataParser ratingDP;
+	private MovieDatParser movieDP;
+	private RatingDatParser ratingDP;
 	private HashMap<Integer, User> users;
 	private HashMap<Integer, Movie> movies;
 	
@@ -18,9 +18,11 @@ public class DataManager {
 	 * @param ratingDataFile
 	 */
 	public DataManager(String movieDatafile, String ratingDataFile) {
-		movieDP = new MovieDataParser(movieDatafile);
+		movieDP = new MovieDatParser();
+		movieDP.setFileName(movieDatafile);
 		movies = movieDP.parseMovies();
-		ratingDP = new RatingDataParser(ratingDataFile);
+		ratingDP = new RatingDatParser();
+		ratingDP.setFileName(ratingDataFile);
 		users = ratingDP.parseRatings(movies);
 	}
 

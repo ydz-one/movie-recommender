@@ -9,14 +9,20 @@ import java.util.Scanner;
  * into a collection of Movie objects to be stored in DataManager.
  *
  */
-public class RatingDataParser {
+public class RatingDatParser extends RatingParser {
 	private String fileName;
 		
 	/**
 	 * Constructor method.
-	 * @param file (the file to read)
 	 */
-	public RatingDataParser(String fileName) {
+	public RatingDatParser() {
+	}
+	
+	/**
+	 * Setter for specifying fileName to read
+	 * @param fileName
+	 */
+	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 	
@@ -66,17 +72,5 @@ public class RatingDataParser {
 		
 		return allUsers;
 	}
-	
-	
-	/*
-	public static void main(String[] args) {
-		MovieDataParser mdp = new MovieDataParser("movies.dat");
-		mdp.parseMovies();
-		RatingDataParser rdp = new RatingDataParser("ratings.dat", mdp.getAllMovies());
-		rdp.parseRatings();
-		System.out.println(mdp.getAllMovies().size());
-		//System.out.println(rdp.getAllUsers().size());
-	}
-	*/
 	
 }

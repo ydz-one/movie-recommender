@@ -9,14 +9,20 @@ import java.util.Scanner;
  * into a collection of Movie objects to be stored in DataManager.
  *
  */
-public class MovieDataParser {
+public class MovieDatParser extends MovieParser {
 	private String fileName;
 	
 	/**
 	 * Constructor method.
-	 * @param file (the file to read)
 	 */
-	public MovieDataParser(String fileName) {
+	public MovieDatParser() {
+	}
+	
+	/**
+	 * Setter for specifying fileName to read
+	 * @param fileName
+	 */
+	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 	
