@@ -36,6 +36,7 @@ public class UserInterface {
 				System.out.println("Type \"quit\" to quit.");
 				
 				String input = in.nextLine();
+				logger.writeToFile(input);
 				
 				if (input.equals("quit")) {
 					break;
@@ -47,20 +48,24 @@ public class UserInterface {
 				if (input.equals("1")) {
 					System.out.println("Type in user ID:");
 					String userID = in.nextLine();
+					logger.writeToFile(userID);
 					
 					// keep prompting user for response if user ID is not numerical
 					while(!userID.matches("\\d+")) {
 						System.out.println("User ID must be a positive integer. Please try again.");
 						userID = in.nextLine();
+						logger.writeToFile(userID);
 					}
 					
 					System.out.println("Type in movie ID:");
 					String movieID = in.nextLine();
+					logger.writeToFile(movieID);
 					
 					// keep prompting user for response if movie ID is not numerical
 					while(!movieID.matches("\\d+")) {
 						System.out.println("Movie ID must be a positive integer. Please try again.");
 						movieID = in.nextLine();
+						logger.writeToFile(movieID);
 					}
 					
 					// convert strings to integers
@@ -73,20 +78,24 @@ public class UserInterface {
 				} else {
 					System.out.println("Type in user ID:");
 					String userID = in.nextLine();
+					logger.writeToFile(userID);
 					
 					// keep prompting user for response if user ID is not numerical
 					while(!userID.matches("\\d+")) {
 						System.out.println("User ID must be a positive integer. Please try again.");
 						userID = in.nextLine();
+						logger.writeToFile(userID);
 					}
 					
 					System.out.println("Type in threshold:");
 					String threshold = in.nextLine();
+					logger.writeToFile(threshold);
 					
 					// keep prompting user for response if movie ID is not numerical
 					while(!threshold.matches("\\d+")) {
 						System.out.println("Threshold must be a positive integer. Please try again.");
 						threshold = in.nextLine();
+						logger.writeToFile(threshold);
 					}
 					
 					// convert strings to integers
@@ -107,10 +116,12 @@ public class UserInterface {
 					System.out.println("Would you like to try eagain? (y/n)");
 					
 					String response = in.nextLine();
+					logger.writeToFile(response);
 					
 					while (!response.equals("y") && !response.equals("n")) {
 						System.out.println("Please type only y or n");
 						response = in.nextLine();
+						logger.writeToFile(response);
 					}
 					
 					if (response.equals("n")) {
