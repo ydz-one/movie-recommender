@@ -37,7 +37,7 @@ public class UserInterface {
 				
 				String input = in.nextLine();
 				
-				if (input.equals("quit") || input.equals("quit\n")) {
+				if (input.equals("quit")) {
 					break;
 				} else if (!input.equals("1") && !input.equals("2")) {
 					System.out.println("Invalid input, please try again\n");
@@ -101,6 +101,20 @@ public class UserInterface {
 					for (Entry<Integer, Double> movie : recommended.entrySet()) {
 						System.out.print("Movie #" + movie.getKey() + ", ");
 						System.out.println("Predicted Rating: " + movie.getValue());
+					}
+					
+					// prompt user to try again or quit
+					System.out.println("Would you like to try eagain? (y/n)");
+					
+					String response = in.nextLine();
+					
+					while (!response.equals("y") && !response.equals("n")) {
+						System.out.println("Please type only y or n");
+						response = in.nextLine();
+					}
+					
+					if (response.equals("n")) {
+						break;
 					}
 				}
 			}
