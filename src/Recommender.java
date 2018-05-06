@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -20,9 +21,10 @@ public class Recommender {
 	 * Constructor.
 	 * @param movieDataFilename
 	 * @param ratingDataFilename
+	 * @throws FileNotFoundException 
 	 */
 	public Recommender(String movieDataFilename, String ratingDataFilename,
-			SimilarityAlgorithm algo, int neighborhoodSize) {
+			SimilarityAlgorithm algo, int neighborhoodSize) throws FileNotFoundException {
 		dm = new DataManager(movieDataFilename, ratingDataFilename);
 		this.algo = algo;
 		this.neighborhoodSize = neighborhoodSize;

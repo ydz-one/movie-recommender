@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 
 /**
@@ -16,8 +17,9 @@ public class DataManager {
 	 * Constructor method
 	 * @param movieDatafile
 	 * @param ratingDataFile
+	 * @throws FileNotFoundException 
 	 */
-	public DataManager(String movieDatafile, String ratingDataFile) {
+	public DataManager(String movieDatafile, String ratingDataFile) throws FileNotFoundException {
 		movieDP = new MovieDatParser();
 		movieDP.setFileName(movieDatafile);
 		movies = movieDP.parseMovies();

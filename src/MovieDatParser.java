@@ -11,13 +11,13 @@ import java.util.Scanner;
  */
 public class MovieDatParser extends MovieParser {
 	private String fileName;
-	
+
 	/**
 	 * Constructor method.
 	 */
 	public MovieDatParser() {
 	}
-	
+
 	/**
 	 * Setter for specifying fileName to read
 	 * @param fileName
@@ -25,40 +25,30 @@ public class MovieDatParser extends MovieParser {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	
+
 	/**
 	 * This method reads in the file
+	 * @throws FileNotFoundException 
 	 */
-	public HashMap<Integer, Movie> parseMovies() {
+	public HashMap<Integer, Movie> parseMovies() throws FileNotFoundException {
 		HashMap<Integer, Movie> allMovies = new HashMap<>();
-		try {
-			File inputFile = new File(fileName);
-			Scanner in = new Scanner(inputFile);
-			
-			while (in.hasNextLine()) {
-				String line = in.nextLine();
-				//split the line of movie info and store them in an array
-				String[] movieInfo = line.split("::");
-				
-				//create new movie object (index 0 is movie id, index 1 is title)
-				Movie movie = new Movie(Integer.parseInt(movieInfo[0]), movieInfo[1]);
-				
-				//add the state to the allStates HashMap (HashMap will prevent repeats)
-				allMovies.put(movie.getId(), movie);
-			}
-			
-			in.close();
-			
-		} catch (FileNotFoundException fnfe) {
-			System.out.println("ERROR: Specified file not found.");
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("ERROR: Something went wrong when reading your file.");
-			System.out.println("Please make sure it is a relevant file of movies.");
+		File inputFile = new File(fileName);
+		Scanner in = new Scanner(inputFile);
+
+		while (in.hasNextLine()) {
+			String line = in.nextLine();
+			//split the line of movie info and store them in an array
+			String[] movieInfo = line.split("::");
+
+			//create new movie object (index 0 is movie id, index 1 is title)
+			Movie movie = new Movie(Integer.parseInt(movieInfo[0]), movieInfo[1]);
+
+			//add the state to the allStates HashMap (HashMap will prevent repeats)
+			allMovies.put(movie.getId(), movie);
 		}
-		
+
+		in.close();
 		return allMovies;
 	}
-	
+
 }

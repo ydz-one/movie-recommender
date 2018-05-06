@@ -1,5 +1,7 @@
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 /**
@@ -24,6 +26,7 @@ public class UserInterface {
 			logger.setOutputFile(loggerFilename);
 			
 			// set up recommender
+			System.out.println("Importing data...");
 			Recommender recommender = new Recommender(movieFilename, ratingFilename,
 					pearson, neighborhoodSize);
 			
@@ -90,12 +93,23 @@ public class UserInterface {
 					int userIDInt = Integer.parseInt(userID);
 					int thresholdInt = Integer.parseInt(threshold);
 					
-					Map<Integer, Double> predictions = recommender.recommendMovies(userIDInt, thresholdInt);
+					Map<Integer, Double> recommended = recommender.recommendMovies(userIDInt, thresholdInt);
 					
-					// TODO display predictions
+					// print results
+					System.out.println("Here are the recommended movies for user #" + userID + ":");
+					
+					for (Entry<Integer, Double> movie : recommended.entrySet()) {
+						System.out.print("Movie #" + movie.getKey() + ", ");
+						System.out.println("Predicted Rating: " + movie.getValue());
+					}
 				}
 			}
-			
+		} catch (IllegalArgumentException iae) {
+			iae.printStackTrace();
+		} catch (IllegalStateException ise) {
+			ise.printStackTrace();
+		} catch (FileNotFoundException fnfe) {
+			fnfe.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (Exception e) {
