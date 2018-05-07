@@ -13,9 +13,9 @@ import java.util.Set;
  *
  */
 public class Recommender {
-	DataManager dm;
-	SimilarityAlgorithm algo;
-	int neighborhoodSize;
+	private DataManager dm;
+	private SimilarityAlgorithm algo;
+	private int neighborhoodSize;
 
 	/**
 	 * Constructor method.
