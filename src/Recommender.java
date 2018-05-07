@@ -18,7 +18,7 @@ public class Recommender {
 	int neighborhoodSize;
 
 	/**
-	 * Constructor.
+	 * Constructor method.
 	 * @param movieDataFilename
 	 * @param ratingDataFilename
 	 * @throws FileNotFoundException 

@@ -6,6 +6,8 @@ import java.util.Map;
  *
  */
 public abstract class RatingParser {
+	protected String fileName;
+	
 	public abstract void setFileName(String fileName);
 	public abstract Map<Integer, User> parseRatings(Map<Integer, Movie> allMovies) throws FileNotFoundException;
 }

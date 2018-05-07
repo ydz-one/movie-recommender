@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -12,12 +11,12 @@ import java.util.Scanner;
  *
  */
 public class RatingDatParser extends RatingParser {
-	private String fileName;
 
 	/**
 	 * Constructor method.
 	 */
 	public RatingDatParser() {
+		fileName = "";
 	}
 
 	/**
@@ -41,22 +40,22 @@ public class RatingDatParser extends RatingParser {
 
 		while (in.hasNextLine()) {
 			String line = in.nextLine();
-			//split the line of movie info and store them in an array
+			// split the line of movie info and store them in an array
 			String[] ratingInfo = line.split("::");
 
 			int userID = Integer.parseInt(ratingInfo[0]);
 			int movieID = Integer.parseInt(ratingInfo[1]);
 			double ratingScore = Double.parseDouble(ratingInfo[2]);
 
+			// populate allUsers map with key: userID, value: User obj
 			if (!allUsers.containsKey(userID)) {
 				User user = new User(userID);
 				allUsers.put(userID, user);
 			}
 			allUsers.get(userID).addRating(movieID, ratingScore);
 
-
+			// just in case, if there is a movie in ratings file not listed in movies file
 			if (!allMovies.containsKey(movieID)) {
-				// System.out.println("a new movie");
 				Movie movie = new Movie(movieID, "unknown title");
 				allMovies.put(movieID, movie);
 			}

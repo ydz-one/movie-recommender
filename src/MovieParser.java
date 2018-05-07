@@ -6,6 +6,8 @@ import java.util.Map;
  *
  */
 public abstract class MovieParser {
+	protected String fileName;
+	
 	public abstract void setFileName(String fileName);
 	public abstract Map<Integer, Movie> parseMovies() throws FileNotFoundException;
 }

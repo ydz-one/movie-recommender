@@ -11,7 +11,6 @@ import java.util.Scanner;
  *
  */
 public class MovieDatParser extends MovieParser {
-	private String fileName;
 
 	/**
 	 * Constructor method.

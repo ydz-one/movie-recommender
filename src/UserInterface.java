@@ -138,7 +138,7 @@ public class UserInterface {
 					}
 					
 					// prompt user to try again or quit
-					System.out.println("Would you like to try eagain? (y/n)");
+					System.out.println("Would you like to try again? (y/n)");
 					
 					String response = in.nextLine();
 					logger.writeToFile(response);
