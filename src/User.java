@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is a POJO that holds relevant data for a user.
@@ -7,7 +8,7 @@ import java.util.HashMap;
 public class User {
 	private int id;
 	//All of this user's ratings (Key: movie id, Value: rating)
-	private HashMap<Integer, Double> ratings;
+	private Map<Integer, Double> ratings;
 	
 	/**
 	 * Constructor method
@@ -32,7 +33,7 @@ public class User {
 	 * Getter method for ratings HashMap
 	 * @return
 	 */
-	public HashMap<Integer, Double> getRatings() {
+	public Map<Integer, Double> getRatings() {
 		return ratings;
 	}
 

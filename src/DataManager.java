@@ -47,7 +47,4 @@ public class DataManager {
 	public Map<Integer, Movie> getMovies() {
 		return movies;
 	}
-	
-	
-	
 }

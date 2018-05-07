@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class is a POJO that holds relevant data for a movie.
@@ -8,7 +9,7 @@ public class Movie {
 	private int id;
 	private String title;
 	//All users' ratings for this movie (Key: user id, Value: rating)
-	private HashMap<Integer, Double> ratings;
+	private Map<Integer, Double> ratings;
 	
 	/**
 	 * Constructor method
@@ -42,7 +43,7 @@ public class Movie {
 	 * Getter for ratings HashMap
 	 * @return hashMap of ratings
 	 */
-	public HashMap<Integer, Double> getRatings() {
+	public Map<Integer, Double> getRatings() {
 		return ratings;
 	}
 	
@@ -50,7 +51,7 @@ public class Movie {
 	 * Setter for ratings HashMap
 	 * @param ratings
 	 */
-	public void setRatings(HashMap<Integer, Double> ratings) {
+	public void setRatings(Map<Integer, Double> ratings) {
 		this.ratings = ratings;
 	}
 	

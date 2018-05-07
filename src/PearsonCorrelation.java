@@ -1,5 +1,6 @@
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class computes the Pearson Correlation Coefficient of two users.
@@ -15,13 +16,13 @@ public class PearsonCorrelation implements SimilarityAlgorithm {
 //		System.out.println("avgU: " + avgU);
 //		System.out.println("avgV: " + avgV);
 		
-		HashMap<Integer, Double> ratingsU = u.getRatings();
-		HashMap<Integer, Double> ratingsV = v.getRatings();
+		Map<Integer, Double> ratingsU = u.getRatings();
+		Map<Integer, Double> ratingsV = v.getRatings();
 		
 //		System.out.println("size of ratingsU: " + ratingsU.size());
 //		System.out.println("size of ratingsV: " + ratingsV.size());
 		
-		HashSet<Integer> commonMovies = new HashSet<>();
+		Set<Integer> commonMovies = new HashSet<>();
 		
 		for (Integer movieID : ratingsU.keySet()) {
 			if (ratingsV.containsKey(movieID)) {
@@ -52,7 +53,7 @@ public class PearsonCorrelation implements SimilarityAlgorithm {
 //		System.out.println("222 " + denom1);
 //		System.out.println("333 " + denom2);
 		
-		if (denom1 == 0 && denom2 == 0) return 0;
+		if (denom1 == 0 || denom2 == 0) return 0;
 		
 		return numerator / (Math.sqrt(denom1) * Math.sqrt(denom2));
 	}

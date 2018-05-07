@@ -134,7 +134,8 @@ public class Recommender {
 		
 		// check if there is at least one neighbor
 		if (neighbors.isEmpty()) {
-			throw new IllegalStateException("ERROR: User has no neighbors who have rated this movie");
+			// return Double.MIN_VALUE if no one has rated this movie before
+			return Double.MIN_VALUE;
 		}
 		
 		// compute numerator and denominator of the CF equation
@@ -172,6 +173,7 @@ public class Recommender {
 	 * @return Map of movies. Key: movieID, value: predicted rating
 	 */
 	public Map<Integer, Double> recommendMovies(int userID, int threshold) {
+		System.out.println("Calculating recommended movies...");
 		// find set of movies the user hasn't rated
 		Set<Integer> moviesRated = dm.getUsers().get(userID).getRatings().keySet();
 		Set<Integer> moviesNotRated = new HashSet<>(dm.getMovies().keySet());
@@ -187,6 +189,12 @@ public class Recommender {
 		
 		for (Integer movieID : moviesNotRated) {
 			double prediction = predictPreference(userID, movieID);
+			
+			// skip this movie if no one has ever rated it
+			if (prediction == Double.MIN_VALUE) {
+				continue;
+			}
+
 			predictions.put(movieID, prediction);
 		}
 		

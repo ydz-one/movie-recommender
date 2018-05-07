@@ -29,7 +29,7 @@ public class UserInterface {
 			System.out.println("Importing data...");
 			Recommender recommender = new Recommender(movieFilename, ratingFilename,
 					pearson, neighborhoodSize);
-			
+
 			while(true) {
 				System.out.println("Type \"1\" for movie preference prediction.");
 				System.out.println("Type \"2\" for movie recommendation.");
@@ -73,13 +73,23 @@ public class UserInterface {
 					int movieIDInt = Integer.parseInt(movieID);
 					
 					try {
+						double result = recommender.predictPreference(userIDInt, movieIDInt);
+						
+						if (result == Double.MIN_VALUE) {
+							System.out.println("No rating data available for this movie. Please try again.");
+							continue;
+						}
+						
 						System.out.println("The predicted movie preference rating for user #"
 							+ userID + " and movie #" + movieID + " is: "
-							+ recommender.predictPreference(userIDInt, movieIDInt) + "\n");
+							+ result + "\n");
 					} catch (IllegalStateException ise) {
 						System.out.println("Unfortunately, movie preference prediction not possible for this user.");
 						System.out.println("This is likely due to the user rating all movies to be the same score.");
 						System.out.println("Please try again.\n");
+						continue;
+					} catch (IllegalArgumentException iae) {
+						System.out.println("User has already rated movie, please pick another one.\n");
 						continue;
 					}
 				} else {
@@ -144,8 +154,6 @@ public class UserInterface {
 					}
 				}
 			}
-		} catch (IllegalArgumentException iae) {
-			iae.printStackTrace();
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
 		} catch (IOException ioe) {
@@ -154,4 +162,5 @@ public class UserInterface {
 			e.printStackTrace();
 		}
 	}
+
 }

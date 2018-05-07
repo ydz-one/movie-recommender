@@ -22,5 +22,7 @@ public class DataManagerTest {
 	public void testGetMovies() {
 		assertEquals(4, dm.getMovies().size());
 	}
+	
+	
 
 }
