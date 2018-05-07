@@ -58,7 +58,9 @@ public class User {
 			sum += ratings.get(movieID);
 		}
 		
-		return sum / ratings.size();
+		if (ratings.size() == 0) return 0;
+		
+		return (sum * 1.0) / (ratings.size() * 1.0);
 	}
 	
 }

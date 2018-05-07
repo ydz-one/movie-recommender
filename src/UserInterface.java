@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * This class contains the main.
  * It handles retrieving input from the user and
- * providing results to the user via the console.
+ * providing results to the user via console.
  *
  */
 public class UserInterface {
@@ -19,8 +19,10 @@ public class UserInterface {
 		String ratingFilename = "ratings.dat";
 		SimilarityAlgorithm pearson = new PearsonCorrelation();
 		int neighborhoodSize = 20;
+		
+		Scanner in = new Scanner(System.in);
 
-		try (Scanner in = new Scanner(System.in)){
+		try {
 			// set up logger
 			Logger logger = Logger.getInstance();
 			logger.setOutputFile(loggerFilename);
@@ -75,6 +77,8 @@ public class UserInterface {
 					System.out.println("The predicted movie preference rating for user #"
 							+ userID + " and movie #" + movieID + " is: "
 							+ recommender.predictPreference(userIDInt, movieIDInt));
+					System.out.println();
+					
 				} else {
 					System.out.println("Type in user ID:");
 					String userID = in.nextLine();
@@ -140,5 +144,7 @@ public class UserInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		in.close();
 	}
 }

@@ -7,7 +7,7 @@
  */
 public class RatingParserFactory {
 	public RatingParser getRatingParser(String fileType) {
-		if (fileType.equalsIgnoreCase("dat")) {
+		if (fileType.equalsIgnoreCase("dat") || fileType.equalsIgnoreCase(".dat")) {
 			return new RatingDatParser();
 		}
 		

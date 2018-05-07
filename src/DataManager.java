@@ -8,8 +8,10 @@ import java.util.HashMap;
  *
  */
 public class DataManager {
-	private MovieDatParser movieDP;
-	private RatingDatParser ratingDP;
+	private MovieParserFactory moviePF;
+	private MovieParser movieParser;
+	private RatingParserFactory ratingPF;
+	private RatingParser ratingParser;
 	private HashMap<Integer, User> users;
 	private HashMap<Integer, Movie> movies;
 	
@@ -19,13 +21,15 @@ public class DataManager {
 	 * @param ratingDataFile
 	 * @throws FileNotFoundException 
 	 */
-	public DataManager(String movieDatafile, String ratingDataFile) throws FileNotFoundException {
-		movieDP = new MovieDatParser();
-		movieDP.setFileName(movieDatafile);
-		movies = movieDP.parseMovies();
-		ratingDP = new RatingDatParser();
-		ratingDP.setFileName(ratingDataFile);
-		users = ratingDP.parseRatings(movies);
+	public DataManager(String movieDataFile, String ratingDataFile) throws FileNotFoundException {
+		moviePF = new MovieParserFactory();
+		movieParser = moviePF.getMovieParser("dat");
+		movieParser.setFileName(movieDataFile);
+		movies = movieParser.parseMovies();
+		ratingPF = new RatingParserFactory();
+		ratingParser = ratingPF.getRatingParser("dat");
+		ratingParser.setFileName(ratingDataFile);
+		users = ratingParser.parseRatings(movies);
 	}
 
 	/**

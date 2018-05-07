@@ -6,5 +6,6 @@ import java.util.HashMap;
  *
  */
 public abstract class MovieParser {
+	public abstract void setFileName(String fileName);
 	public abstract HashMap<Integer, Movie> parseMovies() throws FileNotFoundException;
 }

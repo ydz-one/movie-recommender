@@ -23,6 +23,7 @@ public class RatingDatParser extends RatingParser {
 	 * Setter for specifying fileName to read
 	 * @param fileName
 	 */
+	@Override
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -31,6 +32,7 @@ public class RatingDatParser extends RatingParser {
 	 * This method reads in the file
 	 * @throws FileNotFoundException 
 	 */
+	@Override
 	public HashMap<Integer, User> parseRatings(HashMap<Integer, Movie> allMovies) throws FileNotFoundException {
 		HashMap<Integer, User> allUsers = new HashMap<>();
 		File inputFile = new File(fileName);

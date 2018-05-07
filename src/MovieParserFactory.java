@@ -7,7 +7,7 @@
  */
 public class MovieParserFactory {
 	public MovieParser getMovieParser(String fileType) {
-		if (fileType.equalsIgnoreCase("dat")) {
+		if (fileType.equalsIgnoreCase("dat") || fileType.equalsIgnoreCase(".dat")) {
 			return new MovieDatParser();
 		}
 		

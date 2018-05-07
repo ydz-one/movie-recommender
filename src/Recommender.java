@@ -25,7 +25,7 @@ public class Recommender {
 	 */
 	public Recommender(String movieDataFilename, String ratingDataFilename,
 			SimilarityAlgorithm algo, int neighborhoodSize) throws FileNotFoundException {
-		dm = new DataManager(movieDataFilename, ratingDataFilename);
+		this.dm = new DataManager(movieDataFilename, ratingDataFilename);
 		this.algo = algo;
 		this.neighborhoodSize = neighborhoodSize;
 	}
@@ -55,7 +55,9 @@ public class Recommender {
 	
 		// iterate thru all ratings of this movie to get neighbors
 		for (Entry<Integer, Double> entry : dm.getMovies().get(movieID).getRatings().entrySet()) {
+			//System.out.println("in recommender, line 58: " + userID + " " + entry.getKey());
 			double similarity = calculateSimilarity(userID, entry.getKey());
+			//System.out.println("sim: " + similarity);
 			neighbors.put(entry.getKey(), similarity);
 		}
 

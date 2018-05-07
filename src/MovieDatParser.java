@@ -22,6 +22,7 @@ public class MovieDatParser extends MovieParser {
 	 * Setter for specifying fileName to read
 	 * @param fileName
 	 */
+	@Override
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
@@ -30,6 +31,7 @@ public class MovieDatParser extends MovieParser {
 	 * This method reads in the file
 	 * @throws FileNotFoundException 
 	 */
+	@Override
 	public HashMap<Integer, Movie> parseMovies() throws FileNotFoundException {
 		HashMap<Integer, Movie> allMovies = new HashMap<>();
 		File inputFile = new File(fileName);
