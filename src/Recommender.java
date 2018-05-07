@@ -124,12 +124,38 @@ public class Recommender {
 			throw new IllegalArgumentException("ERROR: Invalid movie ID.");
 		}
 		
+		User user = dm.getUsers().get(userID);
+		
 		// check if user has already rated the movie
-		if (dm.getUsers().get(userID).getRatings().containsKey(movieID)) {
+		if (user.getRatings().containsKey(movieID)) {
 			throw new IllegalArgumentException("ERROR: User has already rated this movie");
 		}
 		
-		// get neighbors
+		// check whether user has no ratings
+		if (user.getRatings().isEmpty()) {
+		    throw new IllegalStateException("ERROR: User has not rated any movies.");
+		}
+		
+		// check whether user has rated all movies the same
+		int index = 0;
+		double reference = -1;
+
+		for (Entry<Integer, Double> entry : user.getRatings().entrySet()) {
+			if (index == 0) {
+				reference = entry.getValue();
+			} else {
+				if (reference != entry.getValue()) {
+					break;
+				}
+			}
+			index++;
+		}
+		
+		if (index > 1 && index == user.getRatings().size()) {
+			throw new IllegalStateException("ERROR: User rated their movies the same rating. Prediction not possible.");
+		}
+		
+		// get neighbors. Key: user ID of neighbor, value: similarity score
 		Map<Integer, Double> neighbors = findNeighbors(userID, movieID, neighborhoodSize);
 		
 		// check if there is at least one neighbor
@@ -150,7 +176,8 @@ public class Recommender {
 		
 		// throw exception if denominator is 0
 		if (Double.isNaN(denominator) || denominator == 0) {
-			throw new IllegalStateException("ERROR: No meaningful neighbor preference data to make prediction");
+			// return Double.MIN_VALUE if denominator is 0
+			return Double.MIN_VALUE;
 		}
 		
 		double prediction = dm.getUsers().get(userID).calcAvgRating() + numerator / denominator;
