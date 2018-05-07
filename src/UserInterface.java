@@ -19,10 +19,8 @@ public class UserInterface {
 		String ratingFilename = "ratings.dat";
 		SimilarityAlgorithm pearson = new PearsonCorrelation();
 		int neighborhoodSize = 20;
-		
-		Scanner in = new Scanner(System.in);
 
-		try {
+		try (Scanner in = new Scanner(System.in)) {
 			// set up logger
 			Logger logger = Logger.getInstance();
 			logger.setOutputFile(loggerFilename);
@@ -74,11 +72,16 @@ public class UserInterface {
 					int userIDInt = Integer.parseInt(userID);
 					int movieIDInt = Integer.parseInt(movieID);
 					
-					System.out.println("The predicted movie preference rating for user #"
+					try {
+						System.out.println("The predicted movie preference rating for user #"
 							+ userID + " and movie #" + movieID + " is: "
-							+ recommender.predictPreference(userIDInt, movieIDInt));
-					System.out.println();
-					
+							+ recommender.predictPreference(userIDInt, movieIDInt) + "\n");
+					} catch (IllegalStateException ise) {
+						System.out.println("Unfortunately, movie preference prediction not possible for this user.");
+						System.out.println("This is likely due to the user rating all movies to be the same score.");
+						System.out.println("Please try again.\n");
+						continue;
+					}
 				} else {
 					System.out.println("Type in user ID:");
 					String userID = in.nextLine();
@@ -106,14 +109,22 @@ public class UserInterface {
 					int userIDInt = Integer.parseInt(userID);
 					int thresholdInt = Integer.parseInt(threshold);
 					
-					Map<Integer, Double> recommended = recommender.recommendMovies(userIDInt, thresholdInt);
-					
-					// print results
-					System.out.println("Here are the recommended movies for user #" + userID + ":");
-					
-					for (Entry<Integer, Double> movie : recommended.entrySet()) {
-						System.out.print("Movie #" + movie.getKey() + ", ");
-						System.out.println("Predicted Rating: " + movie.getValue());
+					// catch IllegalStateException for when user preference data not possible
+					try {
+						Map<Integer, Double> recommended = recommender.recommendMovies(userIDInt, thresholdInt);
+
+						// print results
+						System.out.println("Here are the recommended movies for user #" + userID + ":");
+						
+						for (Entry<Integer, Double> movie : recommended.entrySet()) {
+							System.out.print("Movie #" + movie.getKey() + ", ");
+							System.out.println("Predicted Rating: " + movie.getValue() + "\n");
+						}
+					} catch (IllegalStateException ise) {
+						System.out.println("Unfortunately, movie recommendation not possible for this user.");
+						System.out.println("This is likely due to the user rating all movies to be the same score.");
+						System.out.println("Please try again.\n");
+						continue;
 					}
 					
 					// prompt user to try again or quit
@@ -135,8 +146,6 @@ public class UserInterface {
 			}
 		} catch (IllegalArgumentException iae) {
 			iae.printStackTrace();
-		} catch (IllegalStateException ise) {
-			ise.printStackTrace();
 		} catch (FileNotFoundException fnfe) {
 			fnfe.printStackTrace();
 		} catch (IOException ioe) {
@@ -144,7 +153,5 @@ public class UserInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		in.close();
 	}
 }

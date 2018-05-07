@@ -15,9 +15,9 @@ public class User {
 	 * @param name
 	 * @param ratings
 	 */
-	public User(int id, HashMap<Integer, Double> ratings) {
+	public User(int id) {
 		this.id = id;
-		this.ratings = ratings;
+		this.ratings = new HashMap<>();
 	}
 	
 	/**

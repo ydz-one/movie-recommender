@@ -78,28 +78,6 @@ public class Recommender {
 	}
 	
 	/**
-	 * Calculate the average moving rating for a user.
-	 * @param userID
-	 * @return
-	 */
-	public double getAverageRating(int userID) {
-		// if user hasn't rated any movies, return 0 as average rating
-		if (dm.getUsers().get(userID).getRatings().isEmpty()) {
-			return 0;
-		}
-		
-		int count = 0;
-		double total = 0;
-		
-		for (Entry<Integer, Double> rating : dm.getUsers().get(userID).getRatings().entrySet()) {
-			total += rating.getValue();
-			count++;
-		}
-		
-		return total / count;
-	}
-	
-	/**
 	 * This method returns the k number of entries with the highest value in a map.
 	 * If the number of input elements in map is less than k, it returns a sorted map.  
 	 * @param entries The input entries
@@ -164,17 +142,17 @@ public class Recommender {
 		double denominator = 0;
 
 		for (Entry<Integer, Double> neighbor : neighbors.entrySet()) {
-			numerator += neighbor.getValue()
-					* (dm.getUsers().get(neighbor.getKey()).getRatings().get(movieID) - getAverageRating(neighbor.getKey()));
+			numerator += neighbor.getValue() * (dm.getUsers().get(neighbor.getKey()).getRatings().get(movieID) 
+							- dm.getUsers().get(neighbor.getKey()).calcAvgRating());
 			denominator += Math.abs(neighbor.getValue());
 		}
 		
 		// throw exception if denominator is 0
-		if (denominator == 0) {
+		if (Double.isNaN(denominator) || denominator == 0) {
 			throw new IllegalStateException("ERROR: No meaningful neighbor preference data to make prediction");
 		}
 		
-		double prediction = getAverageRating(userID) + numerator / denominator;
+		double prediction = dm.getUsers().get(userID).calcAvgRating() + numerator / denominator;
 		
 		// cap the max prediction value at 5 and min prediction value at 0
 		if (prediction > 5) {

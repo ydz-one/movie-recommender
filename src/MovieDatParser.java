@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -32,8 +33,8 @@ public class MovieDatParser extends MovieParser {
 	 * @throws FileNotFoundException 
 	 */
 	@Override
-	public HashMap<Integer, Movie> parseMovies() throws FileNotFoundException {
-		HashMap<Integer, Movie> allMovies = new HashMap<>();
+	public Map<Integer, Movie> parseMovies() throws FileNotFoundException {
+		Map<Integer, Movie> allMovies = new HashMap<>();
 		File inputFile = new File(fileName);
 		Scanner in = new Scanner(inputFile);
 

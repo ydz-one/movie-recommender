@@ -2,6 +2,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -33,8 +34,8 @@ public class RatingDatParser extends RatingParser {
 	 * @throws FileNotFoundException 
 	 */
 	@Override
-	public HashMap<Integer, User> parseRatings(HashMap<Integer, Movie> allMovies) throws FileNotFoundException {
-		HashMap<Integer, User> allUsers = new HashMap<>();
+	public Map<Integer, User> parseRatings(Map<Integer, Movie> allMovies) throws FileNotFoundException {
+		Map<Integer, User> allUsers = new HashMap<>();
 		File inputFile = new File(fileName);
 		Scanner in = new Scanner(inputFile);
 
@@ -48,7 +49,7 @@ public class RatingDatParser extends RatingParser {
 			double ratingScore = Double.parseDouble(ratingInfo[2]);
 
 			if (!allUsers.containsKey(userID)) {
-				User user = new User(userID, new HashMap<>());
+				User user = new User(userID);
 				allUsers.put(userID, user);
 			}
 			allUsers.get(userID).addRating(movieID, ratingScore);

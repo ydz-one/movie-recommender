@@ -1,5 +1,5 @@
 import java.io.FileNotFoundException;
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class handles the storage and processing of the data
@@ -12,8 +12,8 @@ public class DataManager {
 	private MovieParser movieParser;
 	private RatingParserFactory ratingPF;
 	private RatingParser ratingParser;
-	private HashMap<Integer, User> users;
-	private HashMap<Integer, Movie> movies;
+	private Map<Integer, User> users;
+	private Map<Integer, Movie> movies;
 	
 	/**
 	 * Constructor method
@@ -36,7 +36,7 @@ public class DataManager {
 	 * Getter for users HashMap
 	 * @return
 	 */
-	public HashMap<Integer, User> getUsers() {
+	public Map<Integer, User> getUsers() {
 		return users;
 	}
 
@@ -44,7 +44,7 @@ public class DataManager {
 	 * Getter for movies HashMap
 	 * @return
 	 */
-	public HashMap<Integer, Movie> getMovies() {
+	public Map<Integer, Movie> getMovies() {
 		return movies;
 	}
 	
