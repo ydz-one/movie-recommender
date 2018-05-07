@@ -52,14 +52,11 @@ public class Recommender {
 
 		// Map of neighbors. Key: UserID, value: similarity
 		Map<Integer, Double> neighbors = new HashMap<>();
-
-		for (Entry<Integer, User> entry : dm.getUsers().entrySet()) {
-			// Check if this potential neighbor has rated the target movie
-			if (entry.getValue().getRatings().containsKey(movieID)) {
-				// Calculate similarity between target user and potential neighbor
-				double similarity = calculateSimilarity(userID, entry.getKey());
-				neighbors.put(entry.getKey(), similarity);
-			}
+	
+		// iterate thru all ratings of this movie to get neighbors
+		for (Entry<Integer, Double> entry : dm.getMovies().get(movieID).getRatings().entrySet()) {
+			double similarity = calculateSimilarity(userID, entry.getKey());
+			neighbors.put(entry.getKey(), similarity);
 		}
 
 		return getTopEntries(neighbors, neighborhoodSize);
