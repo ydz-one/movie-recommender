@@ -103,7 +103,7 @@ The Recommender class is the primary controller class that the UserInterface
 directly communicates with. It receives user requests from UserInterface and
 accesses user and movie data from DataManager to run the prediction and
 recommendation algorithms. To compute similarity between users, we have set up
-a strategy design pattern to allow a concerete implementation of the
+a strategy design pattern to allow a concrete implementation of the
 SimilarityAlgorithm to be selected on the fly.
 
 The interface SimilarityAlgorithm contains one method: execute(User u, User v).
@@ -112,6 +112,13 @@ algorithms you may want to use. The PearsonCorrelation class implements
 SimilarityAlgorithm and uses, as expected, the Pearson Correlation Coefficient
 algorithm to calculate the similarity of User u and User v's ratings. We return
 0 as the similarity if the denominator is ever 0.
+
+The predictPreference() method in Recommender is used to predict a user
+preference rating given a user and a movie that user hasn't seen. Because the
+input movie ratings are provided as a integer between 0 and 5 inclusive, we
+decided to cap the predicted movie rating in this same interval. So, this means
+any negative predicted rating is rounded up to 0 and any rating above 5 is
+rounded down to 5.
 
 The DescendingScoreComparator class is a Comparator we made to sort a Map by
 its value in descending order. It is used in the getTopEntries() method in
@@ -128,6 +135,11 @@ UserInterface.java
 This class is responsible for taking in user input and passing it into the
 Recommender class in order to get meaningful results. It also handles any
 exceptions that may arise.
+
+Because the person using the program enters user information by providing user
+IDs, we assume that they are also comfortable with working directly with
+movie IDs. This is why the input and output of movie arguments and return values
+are in the form of movie IDs rather than movie titles.
 
 
 IV) Miscellaneous:
