@@ -1,4 +1,5 @@
-README: CIT 594 - HW5 (default)
+Movie Recommender: Group Project for CIT 594
+
 This readme illuminates the following:
 
 -UML Class Diagram
